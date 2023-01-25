@@ -1,2 +1,2 @@
-# AttornatusJavaBackend
+# Attornatus Java Back-end
 Projeto desenvolvido na etapa de Teste Técnico para a empresa Attornatus.
