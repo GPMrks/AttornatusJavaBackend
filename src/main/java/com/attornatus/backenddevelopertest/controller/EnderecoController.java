@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/${api.version}/pessoas/{idPessoa}")
-@CrossOrigin("/pessoas")
 @Tag(name = "Endereços Controller")
 public class EnderecoController {
 

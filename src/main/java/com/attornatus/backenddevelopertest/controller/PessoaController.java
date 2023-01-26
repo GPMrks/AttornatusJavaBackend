@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/${api.version}/pessoas")
-@CrossOrigin("/enderecos")
 @Tag(name = "Pessoas Controller")
 public class PessoaController {
 
