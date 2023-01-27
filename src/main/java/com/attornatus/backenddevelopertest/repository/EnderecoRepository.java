@@ -14,5 +14,5 @@ public interface EnderecoRepository extends JpaRepository<Endereco, String> {
     List<Endereco> listarEnderecosPorPessoa(String idPessoa);
 
     @Query("FROM Endereco e WHERE e.idPessoa = :idPessoa AND e.principal = true")
-    Endereco concutarEnderecoPrincipal(String idPessoa);
+    Endereco consultarEnderecoPrincipal(String idPessoa);
 }

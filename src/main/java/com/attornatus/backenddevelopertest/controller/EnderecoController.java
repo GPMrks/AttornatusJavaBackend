@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas/{idPessoa}")
-@CrossOrigin(origins = "https://gpmrks.github.io/AttornatusJavaBackend/")
+@CrossOrigin
 @Tag(name = "Endereços Controller")
 public class EnderecoController {
 

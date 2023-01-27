@@ -70,7 +70,7 @@ public class EnderecoService implements IEnderecoService {
     @Override
     public Endereco consultarEnderecoPrincipal(String idPessoa) {
         Pessoa pessoa = verificarSePessoaExiste(idPessoa);
-        return enderecoRepository.concutarEnderecoPrincipal(idPessoa);
+        return enderecoRepository.consultarEnderecoPrincipal(idPessoa);
     }
 
     @Override
