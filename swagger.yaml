@@ -2,7 +2,6 @@ openapi: 3.0.1
 info:
   title: Attornatus - API Gerenciamento de Pessoas
   description: API para Gerenciamento de Pessoas - Teste Tecnico para empresa Attornatus.
-  termsOfService: "${tos.uri}"
   contact:
     name: Guilherme M.
     url: https://www.linkedin.com/in/guilherme-p-marques/
