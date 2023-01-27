@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
                 license = @io.swagger.v3.oas.annotations.info.License(
                         name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"
                 ),
-                termsOfService = "${tos.uri}",
                 description = "${api.description}"
         ),
         servers = {@Server(
