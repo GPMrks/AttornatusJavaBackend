@@ -23,7 +23,7 @@ public class Pessoa {
     @OneToMany
     private List<Endereco> enderecos;
 
-    public Pessoa(String nome, LocalDate dataNascimento, LinkedList<Endereco> enderecos) {
+    public Pessoa(String nome, LocalDate dataNascimento, List<Endereco> enderecos) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.enderecos = enderecos;
@@ -65,9 +65,8 @@ public class Pessoa {
         this.enderecos = enderecos;
     }
 
-    public Endereco adicionaEndereco(List<Endereco> enderecos, Endereco endereco) {
-        enderecos = getEnderecos();
-        enderecos.add(endereco);
+    public Endereco adicionaEndereco(Endereco endereco) {
+        this.enderecos.add(endereco);
         return endereco;
     }
 

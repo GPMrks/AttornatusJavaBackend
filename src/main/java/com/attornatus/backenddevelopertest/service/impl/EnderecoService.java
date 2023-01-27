@@ -46,7 +46,7 @@ public class EnderecoService implements IEnderecoService {
         endereco.setId(generateUUID());
         endereco.setIdPessoa(pessoa.getId());
         enderecoRepository.save(endereco);
-        pessoa.adicionaEndereco(pessoa.getEnderecos(), endereco);
+        pessoa.adicionaEndereco(endereco);
         pessoaRepository.save(pessoa);
     }
 

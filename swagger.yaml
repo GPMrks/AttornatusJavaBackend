@@ -1,0 +1,239 @@
+openapi: 3.0.1
+info:
+  title: Attornatus - API Gerenciamento de Pessoas
+  description: API para Gerenciamento de Pessoas - Teste Tecnico para empresa Attornatus.
+  termsOfService: "${tos.uri}"
+  contact:
+    name: Guilherme M.
+    url: https://www.linkedin.com/in/guilherme-p-marques/
+    email: guilhermepereiramarques@hotmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: v3
+servers:
+- url: http://localhost:8080
+  description: Development
+paths:
+  /api/v3/pessoas/{id}:
+    get:
+      tags:
+      - Pessoas Controller
+      summary: Consultar pessoa por ID
+      description: Realiza a consulta de uma pessoa por seu ID.
+      operationId: consultarPessoaPorID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Pessoa'
+    put:
+      tags:
+      - Pessoas Controller
+      summary: Atualizar cadastro da pessoa
+      description: Realiza a atualização do cadastro da pessoa.
+      operationId: atualizaPessoa
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pessoa'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Pessoa'
+    delete:
+      tags:
+      - Pessoas Controller
+      summary: Excluir pessoa
+      description: Realiza a exclusão da pessoa da base de dados.
+      operationId: excluiPessoa
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/v3/pessoas:
+    get:
+      tags:
+      - Pessoas Controller
+      summary: Listar todas as pessoas
+      description: Realiza a listagem de todas as pessoas cadastradas.
+      operationId: listarTodasAsPessoas
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pessoa'
+    post:
+      tags:
+      - Pessoas Controller
+      summary: Cadastrar pessoa
+      description: Realiza o cadastro da pessoa na base de dados.
+      operationId: salvaPessoa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pessoa'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Pessoa'
+  /api/v3/pessoas/{idPessoa}/enderecos:
+    get:
+      tags:
+      - Endereços Controller
+      summary: Listar todos os endereços da pessoa
+      description: Listagem de todos os endereços da pessoa
+      operationId: listarTodosOsEnderecosDaPessoa
+      parameters:
+      - name: idPessoa
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endereco'
+    post:
+      tags:
+      - Endereços Controller
+      summary: Cadastrar endereço para a pessoa
+      description: Realiza o cadastro do endereço na lista de endereços da pessoa.
+      operationId: criarEnderecoParaPessoa
+      parameters:
+      - name: idPessoa
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Endereco'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Endereco'
+  /api/v3/pessoas/{idPessoa}/endereco-principal/{idEndereco}:
+    post:
+      tags:
+      - Endereços Controller
+      summary: Informar endereço principal
+      description: "Informar qual será o endereço principal da pessoa, baseado nos\
+        \ endereços cadastrados."
+      operationId: informarEnderecoPrincipal
+      parameters:
+      - name: idPessoa
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: idEndereco
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Endereco'
+  /api/v3/pessoas/{idPessoa}/endereco-principal:
+    get:
+      tags:
+      - Endereços Controller
+      summary: Consultar endereço principal
+      description: Consulta o endereço principal da pessoa.
+      operationId: consultarEnderecoPrincipal
+      parameters:
+      - name: idPessoa
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Endereco'
+components:
+  schemas:
+    Endereco:
+      type: object
+      properties:
+        id:
+          type: string
+        idPessoa:
+          type: string
+        logradouro:
+          type: string
+        cep:
+          type: string
+        numero:
+          type: integer
+          format: int32
+        cidade:
+          type: string
+        principal:
+          type: boolean
+    Pessoa:
+      type: object
+      properties:
+        id:
+          type: string
+        nome:
+          type: string
+        dataNascimento:
+          type: string
+          format: date
+        enderecos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Endereco'
