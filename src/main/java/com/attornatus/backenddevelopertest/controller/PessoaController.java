@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/${api.version}/pessoas")
+@RequestMapping("/pessoas")
 @CrossOrigin(origins = "https://gpmrks.github.io/AttornatusJavaBackend/")
 @Tag(name = "Pessoas Controller")
 public class PessoaController {
