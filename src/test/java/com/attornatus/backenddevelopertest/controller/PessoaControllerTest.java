@@ -24,15 +24,6 @@ public class PessoaControllerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private PessoaRepository pessoaRepository;
-
-    @Autowired
-    private PessoaService pessoaService;
-
-    @Autowired
-    private EnderecoService enderecoService;
-
     String pessoaMock = """
             {
                 "nome" : "John Doe",
