@@ -49,7 +49,7 @@ public class EnderecoController {
     @PostMapping("/enderecos")
     @Operation(summary = "Cadastrar endereço para a pessoa", description = "Realiza o cadastro do endereço na lista de endereços da pessoa.")
     public ResponseEntity<Endereco> criarEnderecoParaPessoa(@PathVariable String idPessoa, @RequestBody Endereco endereco) {
-        enderecoService.salvarEnderecoParaPessoa(pessoaService.consultaPessoa(idPessoa), endereco);
+        enderecoService.salvarEnderecoParaPessoa(pessoaService.consultarPessoa(idPessoa), endereco);
         return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
     }
 

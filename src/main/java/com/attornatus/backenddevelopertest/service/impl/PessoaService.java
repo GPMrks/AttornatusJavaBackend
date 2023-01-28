@@ -36,12 +36,12 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
-    public Pessoa consultaPessoa(String id) {
+    public Pessoa consultarPessoa(String id) {
         return verificarSePessoaExiste(id);
     }
 
     @Override
-    public List<Pessoa> listaTodasAsPessoas() {
+    public List<Pessoa> listarTodasAsPessoas() {
         return pessoaRepository.findAll();
     }
 
@@ -59,7 +59,7 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
-    public Pessoa atualizaPessoa(String id, Pessoa pessoa) {
+    public Pessoa atualizarPessoa(String id, Pessoa pessoa) {
         final Pessoa pessoaIndicada = verificarSePessoaExiste(id);
         pessoaIndicada.setNome(pessoa.getNome());
         pessoaIndicada.setDataNascimento(pessoa.getDataNascimento());
@@ -72,7 +72,7 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
-    public void deletaPessoa(String id) {
+    public void deletarPessoa(String id) {
         verificarSePessoaExiste(id);
         pessoaRepository.deleteById(id);
     }

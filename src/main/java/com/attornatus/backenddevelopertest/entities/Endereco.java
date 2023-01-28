@@ -1,9 +1,12 @@
 package com.attornatus.backenddevelopertest.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Endereco {
@@ -21,8 +24,7 @@ public class Endereco {
 
     }
 
-    public Endereco(String id, String idPessoa, String logradouro, String cep, int numero, String cidade, boolean principal) {
-        this.id = id;
+    public Endereco(String idPessoa, String logradouro, String cep, int numero, String cidade, boolean principal) {
         this.idPessoa = idPessoa;
         this.logradouro = logradouro;
         this.cep = cep;

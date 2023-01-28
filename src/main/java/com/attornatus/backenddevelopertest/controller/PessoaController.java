@@ -27,35 +27,35 @@ public class PessoaController {
     @GetMapping
     @Operation(summary = "Listar todas as pessoas", description = "Realiza a listagem de todas as pessoas cadastradas.")
     public ResponseEntity<List<Pessoa>> listarTodasAsPessoas() {
-        List<Pessoa> listaDeTodasAsPessoas = pessoaService.listaTodasAsPessoas();
+        List<Pessoa> listaDeTodasAsPessoas = pessoaService.listarTodasAsPessoas();
         return ResponseEntity.ok().body(listaDeTodasAsPessoas);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Consultar pessoa por ID", description = "Realiza a consulta de uma pessoa por seu ID.")
     public ResponseEntity<Pessoa> consultarPessoaPorID(@PathVariable String id) {
-        Pessoa pessoa = pessoaService.consultaPessoa(id);
+        Pessoa pessoa = pessoaService.consultarPessoa(id);
         return ResponseEntity.ok().body(pessoa);
     }
 
     @PostMapping
     @Operation(summary = "Cadastrar pessoa", description = "Realiza o cadastro da pessoa na base de dados.")
-    public ResponseEntity<Pessoa> salvaPessoa(@RequestBody Pessoa pessoa) {
+    public ResponseEntity<Pessoa> salvarPessoa(@RequestBody Pessoa pessoa) {
         pessoaService.salvarPessoa(pessoa);
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoa);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar cadastro da pessoa", description = "Realiza a atualização do cadastro da pessoa.")
-    public ResponseEntity<Pessoa> atualizaPessoa(@PathVariable String id, @RequestBody Pessoa pessoa) {
-        Pessoa pessoaAtualizada = pessoaService.atualizaPessoa(id, pessoa);
+    public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable String id, @RequestBody Pessoa pessoa) {
+        Pessoa pessoaAtualizada = pessoaService.atualizarPessoa(id, pessoa);
         return ResponseEntity.ok().body(pessoaAtualizada);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir pessoa", description = "Realiza a exclusão da pessoa da base de dados.")
-    public ResponseEntity<Void> excluiPessoa(@PathVariable String id){
-        pessoaService.deletaPessoa(id);
+    public ResponseEntity<Void> excluirPessoa(@PathVariable String id){
+        pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();
     }
 

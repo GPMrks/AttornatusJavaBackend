@@ -8,13 +8,13 @@ public interface IPessoaService {
 
     String generateUUID();
 
-    List<Pessoa> listaTodasAsPessoas();
+    List<Pessoa> listarTodasAsPessoas();
 
-    Pessoa consultaPessoa(String id);
+    Pessoa consultarPessoa(String id);
 
     void salvarPessoa(Pessoa pessoa);
 
-    Pessoa atualizaPessoa(String id, Pessoa pessoa);
+    Pessoa atualizarPessoa(String id, Pessoa pessoa);
 
-    void deletaPessoa(String id);
+    void deletarPessoa(String id);
 }
