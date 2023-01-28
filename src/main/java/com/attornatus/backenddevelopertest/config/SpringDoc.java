@@ -21,9 +21,6 @@ import org.springframework.context.annotation.Configuration;
         servers = {@Server(
                 url = "${api.server.url}",
                 description = "Development"
-        ), @Server(
-                url = "https://gpmrks.github.io/AttornatusJavaBackend/",
-                description = "GitHub Deploy"
         )}
 )
 public class SpringDoc {
