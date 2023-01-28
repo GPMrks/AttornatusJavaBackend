@@ -1,6 +1,7 @@
 package com.attornatus.backenddevelopertest.controller;
 
 
+import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
 import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
 import com.attornatus.backenddevelopertest.service.impl.PessoaService;
@@ -105,8 +106,8 @@ public class PessoaControllerTest {
 
         Response response = RestAssured.given()
                 .contentType(ContentType.JSON)
-                .when()
                 .pathParams("id", id)
+                .when()
                 .get("/pessoas/{id}")
                 .then()
                 .statusCode(200)
@@ -140,8 +141,8 @@ public class PessoaControllerTest {
         Response response = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(atualizacaoPessoa)
-                .when()
                 .pathParams("id", id)
+                .when()
                 .put("/pessoas/{id}")
                 .then()
                 .statusCode(200)
@@ -167,13 +168,30 @@ public class PessoaControllerTest {
 
         Response response = RestAssured.given()
                 .contentType(ContentType.JSON)
-                .when()
                 .pathParams("id", id)
+                .when()
                 .delete("/pessoas/{id}")
                 .then()
                 .statusCode(204)
                 .extract().response();
 
         assertEquals(204, response.statusCode());
+    }
+
+    @Test
+    void whenGetPersonByIdThatDoesntExistsThenReturnStatusNotFound() {
+
+        Response post = given().contentType(ContentType.JSON).body(pessoaMock).post("/pessoas");
+
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .pathParams("id", "IDNULL")
+                .when()
+                .get("/pessoas/{id}")
+                .then()
+                .statusCode(404)
+                .extract().response();
+
+        assertEquals(404, response.statusCode());
     }
 }

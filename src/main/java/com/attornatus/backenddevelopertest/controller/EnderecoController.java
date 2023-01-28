@@ -53,10 +53,10 @@ public class EnderecoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
     }
 
-    @PostMapping("/endereco-principal/{idEndereco}")
+    @PutMapping("/endereco-principal/{idEndereco}")
     @Operation(summary = "Informar endereço principal", description = "Informar qual será o endereço principal da pessoa, baseado nos endereços cadastrados.")
     public ResponseEntity<Endereco> informarEnderecoPrincipal(@PathVariable String idPessoa, @PathVariable String idEndereco) {
         Endereco enderecoPrincipal = enderecoService.informarEnderecoPrincipal(idPessoa, idEndereco);
-        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoPrincipal);
+        return ResponseEntity.ok().body(enderecoPrincipal);
     }
 }
