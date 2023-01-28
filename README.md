@@ -3,6 +3,9 @@
 Projeto desenvolvido na etapa de Teste Técnico para a empresa Attornatus.
 
 <br>
+Documentação da API disponível em: 
+
+https://gpmrks.github.io/AttornatusJavaBackend/
 
 ---
 
