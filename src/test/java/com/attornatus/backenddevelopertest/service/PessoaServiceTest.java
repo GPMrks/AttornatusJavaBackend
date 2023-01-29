@@ -7,11 +7,16 @@ import com.attornatus.backenddevelopertest.repository.EnderecoRepository;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
 import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
 import com.attornatus.backenddevelopertest.service.impl.PessoaService;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureMockRestServiceServer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -23,18 +28,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockRestServiceServer
 @ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PessoaServiceTest {
 
-    @Autowired
+    @SpyBean
     private PessoaRepository pessoaRepository;
 
-    @Autowired
+    @SpyBean
     private EnderecoRepository enderecoRepository;
 
-    @Autowired
+    @SpyBean
     private PessoaService pessoaService;
 
-    @Autowired
+    @SpyBean
     private EnderecoService enderecoService;
 
     @Test
@@ -69,6 +75,7 @@ public class PessoaServiceTest {
     }
 
     @Test
+    @Order(1)
     void whenSavePersonThenCheckIfPersonWasCreated() {
 
         //given
@@ -76,10 +83,14 @@ public class PessoaServiceTest {
 
         //when
         Pessoa pessoa = pessoaService.salvarPessoa(pessoaExpected);
+        System.out.println(pessoaService.listarTodasAsPessoas());
 
         //then
         assertThat(pessoa).isNotNull();
         assertEquals(pessoa.getId(), pessoaService.listarTodasAsPessoas().get(0).getId());
+
+        //after
+        pessoaService.deletarPessoa(pessoa.getId());
     }
 
     @Test

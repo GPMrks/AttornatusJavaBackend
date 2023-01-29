@@ -3,7 +3,6 @@ package com.attornatus.backenddevelopertest.service;
 import com.attornatus.backenddevelopertest.entities.Endereco;
 import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.exception.EnderecoNaoEncontradoException;
-import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
 import com.attornatus.backenddevelopertest.repository.EnderecoRepository;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
 import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureMockRestServiceServer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -26,16 +26,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 public class EnderecoServiceTest {
 
-    @Autowired
+    @SpyBean
     private PessoaRepository pessoaRepository;
 
-    @Autowired
+    @SpyBean
     private EnderecoRepository enderecoRepository;
 
-    @Autowired
+    @SpyBean
     private PessoaService pessoaService;
 
-    @Autowired
+    @SpyBean
     private EnderecoService enderecoService;
 
     @Test
@@ -109,7 +109,7 @@ public class EnderecoServiceTest {
 
         //then
         assertTrue(enderecoService.listarTodosOsEnderecosDaPessoa(pessoa.getId()).get(1).isPrincipal());
-        assertEquals(enderecoRepository.findById(endereco2.getId()).get() ,enderecoService.consultarEnderecoPrincipal(pessoa.getId()));
+        assertEquals(enderecoRepository.findById(endereco2.getId()).get(), enderecoService.consultarEnderecoPrincipal(pessoa.getId()));
     }
 
     @Test
