@@ -12,7 +12,7 @@ public interface IPessoaService {
 
     Pessoa consultarPessoa(String id);
 
-    void salvarPessoa(Pessoa pessoa);
+    Pessoa salvarPessoa(Pessoa pessoa);
 
     Pessoa atualizarPessoa(String id, Pessoa pessoa);
 

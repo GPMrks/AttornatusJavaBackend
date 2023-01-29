@@ -2,6 +2,7 @@ package com.attornatus.backenddevelopertest.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -19,7 +20,7 @@ public class Pessoa {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Endereco> enderecos;
 
     public Pessoa(String nome, LocalDate dataNascimento, List<Endereco> enderecos) {
@@ -87,7 +88,7 @@ public class Pessoa {
         return "Pessoa{" +
                 "nome='" + nome + '\'' +
                 ", dataNascimento=" + dataNascimento +
-                ", enderecos=" + enderecos +
+                ", enderecos=" + enderecos.toString() +
                 '}';
     }
 }

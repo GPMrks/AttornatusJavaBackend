@@ -9,13 +9,13 @@ public interface IEnderecoService {
 
     String generateUUID();
 
-    void salvarEndereco(Endereco endereco);
+    Endereco salvarEndereco(Endereco endereco);
 
-    void atualizaEndereco(String id, Endereco endereco);
+    void atualizarEndereco(String id, Endereco endereco);
 
-    void salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco);
+    Endereco salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco);
 
-    List<Endereco> listaTodosOsEnderecosDaPessoa(String idPessoa);
+    List<Endereco> listarTodosOsEnderecosDaPessoa(String idPessoa);
 
     Endereco informarEnderecoPrincipal(String idPessoa, String idEndereco);
 

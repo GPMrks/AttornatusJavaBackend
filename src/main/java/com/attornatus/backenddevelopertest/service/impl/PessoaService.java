@@ -36,18 +36,20 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Pessoa consultarPessoa(String id) {
         return verificarSePessoaExiste(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Pessoa> listarTodasAsPessoas() {
         return pessoaRepository.findAll();
     }
 
     @Override
     @Transactional
-    public void salvarPessoa(Pessoa pessoa) {
+    public Pessoa salvarPessoa(Pessoa pessoa) {
         pessoa.setId(generateUUID());
 
         for (Endereco endereco : pessoa.getEnderecos()) {
@@ -56,22 +58,25 @@ public class PessoaService implements IPessoaService {
             enderecoService.salvarEndereco(endereco);
         }
         pessoaRepository.save(pessoa);
+        return pessoa;
     }
 
     @Override
+    @Transactional
     public Pessoa atualizarPessoa(String id, Pessoa pessoa) {
         final Pessoa pessoaIndicada = verificarSePessoaExiste(id);
         pessoaIndicada.setNome(pessoa.getNome());
         pessoaIndicada.setDataNascimento(pessoa.getDataNascimento());
 
         for (Endereco endereco : pessoa.getEnderecos()) {
-            enderecoService.atualizaEndereco(endereco.getId(), endereco);
+            enderecoService.atualizarEndereco(endereco.getId(), endereco);
         }
 
         return pessoaRepository.save(pessoaIndicada);
     }
 
     @Override
+    @Transactional
     public void deletarPessoa(String id) {
         verificarSePessoaExiste(id);
         pessoaRepository.deleteById(id);

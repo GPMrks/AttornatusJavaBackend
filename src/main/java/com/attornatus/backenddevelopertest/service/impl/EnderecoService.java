@@ -9,6 +9,7 @@ import com.attornatus.backenddevelopertest.repository.PessoaRepository;
 import com.attornatus.backenddevelopertest.service.IEnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,27 +38,31 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
-    public void salvarEndereco(Endereco endereco) {
+    public Endereco salvarEndereco(Endereco endereco) {
+        endereco.setId(generateUUID());
         enderecoRepository.save(endereco);
+        return endereco;
     }
 
     @Override
-    public void salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco) {
+    public Endereco salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco) {
         endereco.setId(generateUUID());
         endereco.setIdPessoa(pessoa.getId());
         enderecoRepository.save(endereco);
         pessoa.adicionaEndereco(endereco);
         pessoaRepository.save(pessoa);
+        return endereco;
     }
 
     @Override
-    public List<Endereco> listaTodosOsEnderecosDaPessoa(String idPessoa) {
+    @Transactional(readOnly = true)
+    public List<Endereco> listarTodosOsEnderecosDaPessoa(String idPessoa) {
         verificarSePessoaExiste(idPessoa);
         return enderecoRepository.listarEnderecosPorPessoa(idPessoa);
     }
 
     @Override
-    public void atualizaEndereco(String id, Endereco endereco) {
+    public void atualizarEndereco(String id, Endereco endereco) {
         Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
         Endereco enderecoAtualizar = enderecoOptional.get();
         enderecoAtualizar.setLogradouro(endereco.getLogradouro());
@@ -68,6 +73,7 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Endereco consultarEnderecoPrincipal(String idPessoa) {
         Pessoa pessoa = verificarSePessoaExiste(idPessoa);
         return enderecoRepository.consultarEnderecoPrincipal(idPessoa);

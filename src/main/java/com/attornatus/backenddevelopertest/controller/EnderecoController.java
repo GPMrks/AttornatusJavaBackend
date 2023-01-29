@@ -35,7 +35,7 @@ public class EnderecoController {
     @GetMapping("/enderecos")
     @Operation(summary = "Listar todos os endereços da pessoa", description = "Listagem de todos os endereços da pessoa")
     public ResponseEntity<List<Endereco>> listarTodosOsEnderecosDaPessoa(@PathVariable String idPessoa) {
-        List<Endereco> enderecos = enderecoService.listaTodosOsEnderecosDaPessoa(idPessoa);
+        List<Endereco> enderecos = enderecoService.listarTodosOsEnderecosDaPessoa(idPessoa);
         return ResponseEntity.ok().body(enderecos);
     }
 
