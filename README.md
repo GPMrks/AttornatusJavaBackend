@@ -37,17 +37,20 @@ A entrega deverá ser feita da seguinte forma:
 
 Qualidade de código
 
-1. Durante a implementação de uma nova funcionalidade de software solicitada, quais critérios você avalia e implementa
-   para garantia de qualidade de software?
+1. Durante a implementação de uma nova funcionalidade de software solicitada, quais critérios você avalia e implementa para garantia de qualidade de software?
 
+   <b>
    Sempre avalio a qualidade do meu código ao escrever, levando em consideração sua legibilidade, sua coesão, se possui
    baixo acoplamento, se está limpo, e sempre visando utilizar as práticas mais modernas com os limites impostos em cada
    projeto.
+   </b>
 
 2. Em qual etapa da implementação você considera a qualidade de software?
 
+   <b>
    Considero do início ao fim, não acredito ser uma parte do ciclo, mas sim deveria fazer parte do ciclo todo, incluindo
    testes e segurança.
+   </b>
 
 ---
 
