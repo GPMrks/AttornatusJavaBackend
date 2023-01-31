@@ -18,15 +18,11 @@ public class PessoaService implements IPessoaService {
 
     private PessoaRepository pessoaRepository;
 
-    @Autowired
-    private void setPessoaRepository(PessoaRepository pessoaRepository) {
-        this.pessoaRepository = pessoaRepository;
-    }
-
     private EnderecoService enderecoService;
 
     @Autowired
-    private void setEnderecoRepository(EnderecoService enderecoService) {
+    public PessoaService(PessoaRepository pessoaRepository, EnderecoService enderecoService) {
+        this.pessoaRepository = pessoaRepository;
         this.enderecoService = enderecoService;
     }
 

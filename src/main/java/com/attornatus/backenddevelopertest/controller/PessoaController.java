@@ -20,7 +20,7 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @Autowired
-    public void setPessoaService(PessoaService pessoaService) {
+    public PessoaController(PessoaService pessoaService) {
         this.pessoaService = pessoaService;
     }
 

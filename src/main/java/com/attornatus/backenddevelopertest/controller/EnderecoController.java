@@ -20,15 +20,11 @@ public class EnderecoController {
 
     private PessoaService pessoaService;
 
-    @Autowired
-    public void setPessoaService(PessoaService pessoaService) {
-        this.pessoaService = pessoaService;
-    }
-
     private EnderecoService enderecoService;
 
     @Autowired
-    public void setEnderecoService(EnderecoService enderecoService) {
+    public EnderecoController(PessoaService pessoaService, EnderecoService enderecoService) {
+        this.pessoaService = pessoaService;
         this.enderecoService = enderecoService;
     }
 

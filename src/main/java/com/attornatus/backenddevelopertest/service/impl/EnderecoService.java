@@ -20,15 +20,11 @@ public class EnderecoService implements IEnderecoService {
 
     private EnderecoRepository enderecoRepository;
 
-    @Autowired
-    private void setEnderecoRepository(EnderecoRepository enderecoRepository) {
-        this.enderecoRepository = enderecoRepository;
-    }
-
     private PessoaRepository pessoaRepository;
 
     @Autowired
-    private void setPessoaRepository(PessoaRepository pessoaRepository) {
+    public EnderecoService(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
+        this.enderecoRepository = enderecoRepository;
         this.pessoaRepository = pessoaRepository;
     }
 
