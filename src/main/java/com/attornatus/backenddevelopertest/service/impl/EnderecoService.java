@@ -60,12 +60,11 @@ public class EnderecoService implements IEnderecoService {
     @Override
     public void atualizarEndereco(String id, Endereco endereco) {
         Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
-        Endereco enderecoAtualizar = enderecoOptional.get();
-        enderecoAtualizar.setLogradouro(endereco.getLogradouro());
-        enderecoAtualizar.setNumero(endereco.getNumero());
-        enderecoAtualizar.setCep(endereco.getCep());
-        enderecoAtualizar.setCidade(endereco.getCidade());
-
+        Endereco enderecoAtualizado = enderecoOptional.get();
+        enderecoAtualizado.setLogradouro(endereco.getLogradouro());
+        enderecoAtualizado.setNumero(endereco.getNumero());
+        enderecoAtualizado.setCep(endereco.getCep());
+        enderecoAtualizado.setCidade(endereco.getCidade());
     }
 
     @Override

@@ -3,124 +3,112 @@ package com.attornatus.backenddevelopertest.service;
 import com.attornatus.backenddevelopertest.entities.Endereco;
 import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
-import com.attornatus.backenddevelopertest.repository.EnderecoRepository;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
-import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
 import com.attornatus.backenddevelopertest.service.impl.PessoaService;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureMockRestServiceServer;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@AutoConfigureMockRestServiceServer
-@ExtendWith(SpringExtension.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PessoaServiceTest {
 
-    @SpyBean
+    private final Pessoa pessoaMock = new Pessoa();
+    private final Pessoa pessoa1 = new Pessoa();
+    private final Pessoa pessoa2 = new Pessoa();
+    private final Pessoa pessoa3 = new Pessoa();
+    @Mock
     private PessoaRepository pessoaRepository;
-
-    @SpyBean
-    private EnderecoRepository enderecoRepository;
-
-    @SpyBean
+    @InjectMocks
     private PessoaService pessoaService;
 
-    @SpyBean
-    private EnderecoService enderecoService;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        startPessoas();
+    }
 
     @Test
     void whenGetAllPersonThenCheckIfListOfPersonWasReturned() {
 
-        //given
-        Pessoa pessoa1 = getPessoa();
-        Pessoa pessoa2 = getPessoa();
-        Pessoa pessoa3 = getPessoa();
-
         //when
-        pessoaService.salvarPessoa(pessoa1);
-        pessoaService.salvarPessoa(pessoa2);
-        pessoaService.salvarPessoa(pessoa3);
+        when(pessoaRepository.findAll()).thenReturn(List.of(pessoa1, pessoa2, pessoa3));
 
         //then
         assertEquals(3, pessoaService.listarTodasAsPessoas().size());
+        verify(pessoaRepository).findAll();
     }
-
 
     @Test
     void whenGetPersonThenCheckIfPersonWasReturned() {
 
         //given
-        Pessoa pessoaExpected = getPessoa();
+        Pessoa pessoa = pessoaMock;
 
         //when
-        Pessoa pessoa = pessoaService.salvarPessoa(pessoaExpected);
+        when(pessoaRepository.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
+        Pessoa pessoaConsultada = pessoaService.consultarPessoa(pessoa.getId());
 
         //then
-        assertEquals(pessoaService.consultarPessoa(pessoa.getId()).toString(), pessoa.toString());
+        assertEquals(pessoa, pessoaConsultada);
+        verify(pessoaRepository).findById(pessoa.getId());
     }
 
     @Test
-    @Order(1)
     void whenSavePersonThenCheckIfPersonWasCreated() {
 
-        //given
-        Pessoa pessoaExpected = getPessoa();
-
         //when
-        Pessoa pessoa = pessoaService.salvarPessoa(pessoaExpected);
-        System.out.println(pessoaService.listarTodasAsPessoas());
+        when(pessoaRepository.save(pessoaMock)).thenReturn(pessoaMock);
+        Pessoa pessoa = pessoaService.salvarPessoa(pessoaMock);
 
         //then
-        assertThat(pessoa).isNotNull();
-        assertEquals(pessoa.getId(), pessoaService.listarTodasAsPessoas().get(0).getId());
-
-        //after
-        pessoaService.deletarPessoa(pessoa.getId());
+        assertEquals(pessoa, pessoaMock);
+        verify(pessoaRepository).save(pessoa);
     }
 
     @Test
     void whenUpdatePersonThenCheckIfDataWasChanged() {
 
-        //given
-        Pessoa pessoaExpected = getPessoa();
-        pessoaService.salvarPessoa(pessoaExpected);
-
         //when
-        Pessoa pessoa = getPessoa();
-        pessoa.setNome("Jack Doe");
-        pessoaService.atualizarPessoa(pessoaExpected.getId(), pessoa);
+        Pessoa pessoa = pessoaMock;
+        when(pessoaRepository.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
+        when(pessoaRepository.save(pessoa)).thenReturn(pessoa);
+        pessoa.setNome("Jane Doe");
+        Pessoa pessoaAtualizada = pessoaService.atualizarPessoa(pessoa.getId(), pessoa);
 
         //then
-        assertEquals("Jack Doe", pessoaService.consultarPessoa(pessoaExpected.getId()).getNome());
+        assertNotNull(pessoaAtualizada);
+        assertEquals(pessoa.getNome(), pessoaAtualizada.getNome());
+        verify(pessoaRepository).save(pessoaAtualizada);
     }
 
     @Test
     void whenDeletePersonThenCheckIfDataWasDeleted() {
 
         //given
-        Pessoa pessoaExpected = getPessoa();
-        Pessoa pessoa = pessoaService.salvarPessoa(pessoaExpected);
+        Pessoa pessoa = pessoaMock;
 
         //when
+        when(pessoaRepository.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
+        doNothing().when(pessoaRepository).deleteById(pessoa.getId());
         pessoaService.deletarPessoa(pessoa.getId());
 
         //then
-        assertFalse(pessoaRepository.existsById(pessoa.getId()));
+        verify(pessoaRepository).deleteById(pessoa.getId());
+        verify(pessoaRepository, times(1)).deleteById(pessoa.getId());
     }
 
     @Test
@@ -128,13 +116,26 @@ public class PessoaServiceTest {
         assertThrows(PessoaNaoEncontradaException.class, () -> pessoaService.consultarPessoa("IDNULL"));
     }
 
-    private Pessoa getPessoa() {
+    private void startPessoas() {
 
-        Pessoa pessoaExpected = new Pessoa();
-        pessoaExpected.setNome("John Doe");
-        pessoaExpected.setDataNascimento(LocalDate.of(2000, 1, 1));
-        pessoaExpected.setEnderecos(new ArrayList<Endereco>());
+        pessoaMock.setId(String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 6));
+        pessoaMock.setNome("John Doe");
+        pessoaMock.setDataNascimento(LocalDate.of(2001, 1, 1));
+        pessoaMock.setEnderecos(new ArrayList<Endereco>());
 
-        return pessoaExpected;
+        pessoa1.setId(String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 6));
+        pessoa1.setNome("Jane Doe");
+        pessoa1.setDataNascimento(LocalDate.of(2002, 2, 2));
+        pessoa1.setEnderecos(new ArrayList<Endereco>());
+
+        pessoa2.setId(String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 6));
+        pessoa2.setNome("Jimmy Doe");
+        pessoa2.setDataNascimento(LocalDate.of(2003, 3, 3));
+        pessoa2.setEnderecos(new ArrayList<Endereco>());
+
+        pessoa3.setId(String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 6));
+        pessoa3.setNome("Geoffrey Doe");
+        pessoa3.setDataNascimento(LocalDate.of(2004, 4, 4));
+        pessoa3.setEnderecos(new ArrayList<Endereco>());
     }
 }
