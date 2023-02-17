@@ -1,0 +1,7 @@
+version: '3.9'
+
+services:
+  attornatus-java-backend:
+    image: gpmrks/attornatus-java-backend:3.0.0
+    ports:
+      - "8080:8080"
