@@ -103,6 +103,20 @@ public class EnderecoServiceTest {
     }
 
     @Test
+    void whenGetAddressByIdThenCheckIfReturnedTheAddress() {
+
+        //when
+        Pessoa pessoa = pessoaService.salvarPessoa(pessoaMock);
+        when(pessoaRepository.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
+        Endereco endereco = enderecoService.salvarEnderecoParaPessoa(pessoa, enderecoMock);
+        when(enderecoRepository.findById(endereco.getId())).thenReturn(Optional.of(endereco));
+
+        //then
+        assertEquals(enderecoService.consultarPorId(endereco.getId()), enderecoMock);
+        verify(enderecoRepository).findById(endereco.getId());
+    }
+
+    @Test
     void whenGetMainAddressessThenCheckIfReturnedTheRight() {
 
         //when
@@ -124,7 +138,7 @@ public class EnderecoServiceTest {
     }
 
     @Test
-    void whenGetAddressThatIdDoesntExistsThenThrowEnderecoNaoExisteException() {
+    void whenGetAddressByIdDoesntExistsThenThrowEnderecoNaoExisteException() {
 
         //when
         Pessoa pessoa = pessoaService.salvarPessoa(pessoaMock);

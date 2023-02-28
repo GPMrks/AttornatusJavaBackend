@@ -9,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,9 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class EnderecoControllerTest {
-
-    @LocalServerPort
-    private int port;
 
     String pessoaMock = """
             {
@@ -41,6 +35,8 @@ public class EnderecoControllerTest {
                     "cidade" : "Test City"
                 }]
             }""";
+    @LocalServerPort
+    private int port;
 
     @BeforeEach
     public void setUp() throws Exception {

@@ -18,9 +18,9 @@ import java.util.UUID;
 @Service
 public class EnderecoService implements IEnderecoService {
 
-    private final EnderecoRepository enderecoRepository;
+    private EnderecoRepository enderecoRepository;
 
-    private final PessoaRepository pessoaRepository;
+    private PessoaRepository pessoaRepository;
 
     @Autowired
     public EnderecoService(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
