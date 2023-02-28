@@ -19,12 +19,10 @@ import java.util.List;
 public class PessoaController {
 
     private final PessoaService pessoaService;
-    private final PessoaHateoas pessoaHateoas;
 
     @Autowired
-    public PessoaController(PessoaService pessoaService, PessoaHateoas pessoaHateoas) {
+    public PessoaController(PessoaService pessoaService) {
         this.pessoaService = pessoaService;
-        this.pessoaHateoas = pessoaHateoas;
     }
 
     @GetMapping

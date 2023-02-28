@@ -23,13 +23,10 @@ public class EnderecoController {
 
     private final EnderecoService enderecoService;
 
-    private final EnderecoHateoas enderecoHateoas;
-
     @Autowired
-    public EnderecoController(PessoaService pessoaService, EnderecoService enderecoService, EnderecoHateoas enderecoHateoas) {
+    public EnderecoController(PessoaService pessoaService, EnderecoService enderecoService) {
         this.pessoaService = pessoaService;
         this.enderecoService = enderecoService;
-        this.enderecoHateoas = enderecoHateoas;
     }
 
     @GetMapping("/enderecos")
