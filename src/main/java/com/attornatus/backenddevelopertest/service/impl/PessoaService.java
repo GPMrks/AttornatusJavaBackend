@@ -16,9 +16,9 @@ import java.util.UUID;
 @Service
 public class PessoaService implements IPessoaService {
 
-    private PessoaRepository pessoaRepository;
+    private final PessoaRepository pessoaRepository;
 
-    private EnderecoService enderecoService;
+    private final EnderecoService enderecoService;
 
     @Autowired
     public PessoaService(PessoaRepository pessoaRepository, EnderecoService enderecoService) {

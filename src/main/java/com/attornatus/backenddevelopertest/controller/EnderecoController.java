@@ -1,6 +1,7 @@
 package com.attornatus.backenddevelopertest.controller;
 
 import com.attornatus.backenddevelopertest.entities.Endereco;
+import com.attornatus.backenddevelopertest.hateoas.EnderecoHateoas;
 import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
 import com.attornatus.backenddevelopertest.service.impl.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,34 +19,48 @@ import java.util.List;
 @Tag(name = "Endereços Controller")
 public class EnderecoController {
 
-    private PessoaService pessoaService;
+    private final PessoaService pessoaService;
 
-    private EnderecoService enderecoService;
+    private final EnderecoService enderecoService;
+
+    private final EnderecoHateoas enderecoHateoas;
 
     @Autowired
-    public EnderecoController(PessoaService pessoaService, EnderecoService enderecoService) {
+    public EnderecoController(PessoaService pessoaService, EnderecoService enderecoService, EnderecoHateoas enderecoHateoas) {
         this.pessoaService = pessoaService;
         this.enderecoService = enderecoService;
+        this.enderecoHateoas = enderecoHateoas;
     }
 
     @GetMapping("/enderecos")
     @Operation(summary = "Listar todos os endereços da pessoa", description = "Listagem de todos os endereços da pessoa")
     public ResponseEntity<List<Endereco>> listarTodosOsEnderecosDaPessoa(@PathVariable String idPessoa) {
         List<Endereco> enderecos = enderecoService.listarTodosOsEnderecosDaPessoa(idPessoa);
+        EnderecoHateoas.toHateoasList(enderecos);
         return ResponseEntity.ok().body(enderecos);
+    }
+
+    @GetMapping("/enderecos/{idEndereco}")
+    @Operation(summary = "Consultar endereço por ID", description = "Consulta o endereço da pessoa pelo ID do endereço.")
+    public ResponseEntity<Endereco> consultarEnderecoPorID(@PathVariable String idPessoa, @PathVariable String idEndereco){
+        Endereco endereco = enderecoService.consultarPorId(idEndereco);
+        EnderecoHateoas.toHateoas(endereco.getIdPessoa(), endereco.getId(), endereco);
+        return ResponseEntity.ok().body(endereco);
     }
 
     @GetMapping("/endereco-principal")
     @Operation(summary = "Consultar endereço principal", description = "Consulta o endereço principal da pessoa.")
     public ResponseEntity<Endereco> consultarEnderecoPrincipal(@PathVariable String idPessoa){
         Endereco enderecoPrincipal = enderecoService.consultarEnderecoPrincipal(idPessoa);
+        EnderecoHateoas.toHateoas(enderecoPrincipal.getIdPessoa(), enderecoPrincipal.getId(), enderecoPrincipal);
         return ResponseEntity.ok().body(enderecoPrincipal);
     }
 
     @PostMapping("/enderecos")
     @Operation(summary = "Cadastrar endereço para a pessoa", description = "Realiza o cadastro do endereço na lista de endereços da pessoa.")
     public ResponseEntity<Endereco> criarEnderecoParaPessoa(@PathVariable String idPessoa, @RequestBody Endereco endereco) {
-        enderecoService.salvarEnderecoParaPessoa(pessoaService.consultarPessoa(idPessoa), endereco);
+        Endereco enderecoParaPessoa = enderecoService.salvarEnderecoParaPessoa(pessoaService.consultarPessoa(idPessoa), endereco);
+        EnderecoHateoas.toHateoas(enderecoParaPessoa.getIdPessoa(), enderecoParaPessoa.getId(), enderecoParaPessoa);
         return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
     }
 
@@ -53,6 +68,7 @@ public class EnderecoController {
     @Operation(summary = "Informar endereço principal", description = "Informar qual será o endereço principal da pessoa, baseado nos endereços cadastrados.")
     public ResponseEntity<Endereco> informarEnderecoPrincipal(@PathVariable String idPessoa, @PathVariable String idEndereco) {
         Endereco enderecoPrincipal = enderecoService.informarEnderecoPrincipal(idPessoa, idEndereco);
+        EnderecoHateoas.toHateoas(enderecoPrincipal.getIdPessoa(), enderecoPrincipal.getId(), enderecoPrincipal);
         return ResponseEntity.ok().body(enderecoPrincipal);
     }
 }

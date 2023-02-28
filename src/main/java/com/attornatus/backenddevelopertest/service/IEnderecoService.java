@@ -11,6 +11,8 @@ public interface IEnderecoService {
 
     Endereco salvarEndereco(Endereco endereco);
 
+    Endereco consultarPorId(String id);
+
     void atualizarEndereco(String id, Endereco endereco);
 
     Endereco salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco);

@@ -18,9 +18,9 @@ import java.util.UUID;
 @Service
 public class EnderecoService implements IEnderecoService {
 
-    private EnderecoRepository enderecoRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    private PessoaRepository pessoaRepository;
+    private final PessoaRepository pessoaRepository;
 
     @Autowired
     public EnderecoService(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
@@ -38,6 +38,12 @@ public class EnderecoService implements IEnderecoService {
         endereco.setId(generateUUID());
         enderecoRepository.save(endereco);
         return endereco;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Endereco consultarPorId(String id) {
+        return verificarSeEnderecoExiste(id);
     }
 
     @Override

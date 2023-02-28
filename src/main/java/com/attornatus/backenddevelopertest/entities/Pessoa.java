@@ -5,13 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Pessoa {
+public class Pessoa extends RepresentationModel<Pessoa> {
 
     @Id
     private String id;

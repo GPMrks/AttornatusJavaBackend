@@ -2,11 +2,12 @@ package com.attornatus.backenddevelopertest.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Objects;
 
 @Entity
-public class Endereco {
+public class Endereco extends RepresentationModel<Endereco> {
 
     @Id
     private String id;
