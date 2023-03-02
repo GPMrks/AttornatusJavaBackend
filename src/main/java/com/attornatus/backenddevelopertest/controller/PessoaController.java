@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
-@CrossOrigin
 @Tag(name = "Pessoas Controller")
 public class PessoaController {
 
