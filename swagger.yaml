@@ -9,8 +9,10 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: v5
+  version: v6
 servers:
+- url: https://attornatus-api.onrender.com/
+  description: Render Hosted API
 - url: http://localhost:8080
   description: Development
 paths:

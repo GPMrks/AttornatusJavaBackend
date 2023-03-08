@@ -18,7 +18,11 @@ import org.springframework.context.annotation.Configuration;
                 ),
                 description = "${api.description}"
         ),
-        servers = {@Server(
+        servers = {
+                @Server(
+                        url = "https://attornatus-api.onrender.com/",
+                        description = "Render Hosted API"
+                ), @Server(
                 url = "${api.server.url}",
                 description = "Development"
         )}
