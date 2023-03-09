@@ -17,4 +17,4 @@ FROM openjdk:19-jdk-alpine
 COPY --from=build /target/*.war AttornatusJavaBackend.jar
 # ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","AttornatusJavaBackend.jar"]
+ENTRYPOINT ["java","-jar","AttornatusJavaBackend.jar --spring.profiles.active=prod"]
