@@ -2,7 +2,7 @@ package com.attornatus.backenddevelopertest.controller;
 
 import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.hateoas.PessoaHateoas;
-import com.attornatus.backenddevelopertest.service.impl.PessoaService;
+import com.attornatus.backenddevelopertest.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

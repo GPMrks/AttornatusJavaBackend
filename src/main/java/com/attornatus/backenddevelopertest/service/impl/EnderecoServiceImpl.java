@@ -6,7 +6,7 @@ import com.attornatus.backenddevelopertest.exception.EnderecoNaoEncontradoExcept
 import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
 import com.attornatus.backenddevelopertest.repository.EnderecoRepository;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
-import com.attornatus.backenddevelopertest.service.IEnderecoService;
+import com.attornatus.backenddevelopertest.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +16,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EnderecoService implements IEnderecoService {
+public class EnderecoServiceImpl implements EnderecoService {
 
     private EnderecoRepository enderecoRepository;
 
     private PessoaRepository pessoaRepository;
 
     @Autowired
-    public EnderecoService(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
+    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
         this.enderecoRepository = enderecoRepository;
         this.pessoaRepository = pessoaRepository;
     }
@@ -41,7 +41,6 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Endereco consultarPorId(String id) {
         return verificarSeEnderecoExiste(id);
     }
@@ -57,7 +56,6 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Endereco> listarTodosOsEnderecosDaPessoa(String idPessoa) {
         verificarSePessoaExiste(idPessoa);
         return enderecoRepository.listarEnderecosPorPessoa(idPessoa);
@@ -74,7 +72,6 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Endereco consultarEnderecoPrincipal(String idPessoa) {
         Pessoa pessoa = verificarSePessoaExiste(idPessoa);
         return enderecoRepository.consultarEnderecoPrincipal(idPessoa);
