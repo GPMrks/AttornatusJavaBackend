@@ -4,11 +4,9 @@ import com.attornatus.backenddevelopertest.entities.Endereco;
 import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
-import com.attornatus.backenddevelopertest.service.impl.PessoaService;
+import com.attornatus.backenddevelopertest.service.impl.PessoaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -32,8 +30,9 @@ public class PessoaServiceTest {
     private final Pessoa pessoa3 = new Pessoa();
     @Mock
     private PessoaRepository pessoaRepository;
+
     @InjectMocks
-    private PessoaService pessoaService;
+    private PessoaServiceImpl pessoaService;
 
     @BeforeEach
     void setUp() {

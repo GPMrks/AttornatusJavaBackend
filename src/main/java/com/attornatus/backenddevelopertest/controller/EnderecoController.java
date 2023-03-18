@@ -2,8 +2,8 @@ package com.attornatus.backenddevelopertest.controller;
 
 import com.attornatus.backenddevelopertest.entities.Endereco;
 import com.attornatus.backenddevelopertest.hateoas.EnderecoHateoas;
-import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
-import com.attornatus.backenddevelopertest.service.impl.PessoaService;
+import com.attornatus.backenddevelopertest.service.EnderecoService;
+import com.attornatus.backenddevelopertest.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

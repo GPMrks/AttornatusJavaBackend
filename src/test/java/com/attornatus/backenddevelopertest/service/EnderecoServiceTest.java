@@ -5,8 +5,8 @@ import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.exception.EnderecoNaoEncontradoException;
 import com.attornatus.backenddevelopertest.repository.EnderecoRepository;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
-import com.attornatus.backenddevelopertest.service.impl.EnderecoService;
-import com.attornatus.backenddevelopertest.service.impl.PessoaService;
+import com.attornatus.backenddevelopertest.service.impl.EnderecoServiceImpl;
+import com.attornatus.backenddevelopertest.service.impl.PessoaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,9 +37,9 @@ public class EnderecoServiceTest {
     @Mock
     private EnderecoRepository enderecoRepository;
     @InjectMocks
-    private PessoaService pessoaService;
+    private PessoaServiceImpl pessoaService;
     @InjectMocks
-    private EnderecoService enderecoService;
+    private EnderecoServiceImpl enderecoService;
 
     @BeforeEach
     void setUp() {

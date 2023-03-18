@@ -4,7 +4,7 @@ import com.attornatus.backenddevelopertest.entities.Endereco;
 import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
 import com.attornatus.backenddevelopertest.repository.PessoaRepository;
-import com.attornatus.backenddevelopertest.service.IPessoaService;
+import com.attornatus.backenddevelopertest.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +14,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class PessoaService implements IPessoaService {
+public class PessoaServiceImpl implements PessoaService {
 
     private PessoaRepository pessoaRepository;
 
-    private EnderecoService enderecoService;
+    private EnderecoServiceImpl enderecoService;
 
     @Autowired
-    public PessoaService(PessoaRepository pessoaRepository, EnderecoService enderecoService) {
+    public PessoaServiceImpl(PessoaRepository pessoaRepository, EnderecoServiceImpl enderecoService) {
         this.pessoaRepository = pessoaRepository;
         this.enderecoService = enderecoService;
     }
@@ -32,19 +32,16 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Pessoa consultarPessoa(String id) {
         return verificarSePessoaExiste(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Pessoa> listarTodasAsPessoas() {
         return pessoaRepository.findAll();
     }
 
     @Override
-    @Transactional
     public Pessoa salvarPessoa(Pessoa pessoa) {
         pessoa.setId(generateUUID());
 
@@ -58,7 +55,6 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
-    @Transactional
     public Pessoa atualizarPessoa(String id, Pessoa pessoa) {
         final Pessoa pessoaIndicada = verificarSePessoaExiste(id);
         pessoaIndicada.setNome(pessoa.getNome());
@@ -72,7 +68,6 @@ public class PessoaService implements IPessoaService {
     }
 
     @Override
-    @Transactional
     public void deletarPessoa(String id) {
         verificarSePessoaExiste(id);
         pessoaRepository.deleteById(id);
