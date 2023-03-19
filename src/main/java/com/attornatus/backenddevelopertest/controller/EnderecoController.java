@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -54,10 +56,11 @@ public class EnderecoController {
 
     @PostMapping("/enderecos")
     @Operation(summary = "Cadastrar endereço para a pessoa", description = "Realiza o cadastro do endereço na lista de endereços da pessoa.")
-    public ResponseEntity<Endereco> criarEnderecoParaPessoa(@PathVariable String idPessoa, @RequestBody Endereco endereco) {
+    public ResponseEntity<Endereco> criarEnderecoParaPessoa(@PathVariable String idPessoa, @RequestBody Endereco endereco, UriComponentsBuilder uriComponentsBuilder) {
         Endereco enderecoParaPessoa = enderecoService.salvarEnderecoParaPessoa(pessoaService.consultarPessoa(idPessoa), endereco);
         EnderecoHateoas.toHateoas(enderecoParaPessoa.getIdPessoa(), enderecoParaPessoa.getId(), enderecoParaPessoa);
-        return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
+        URI uri = uriComponentsBuilder.path("/pessoas/{idPessoa}/enderecos/{idEndereco}").buildAndExpand(enderecoParaPessoa.getIdPessoa(), enderecoParaPessoa.getId()).toUri();
+        return ResponseEntity.created(uri).body(enderecoParaPessoa);
     }
 
     @PutMapping("/endereco-principal/{idEndereco}")

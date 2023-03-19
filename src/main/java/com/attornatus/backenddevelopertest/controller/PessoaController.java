@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -42,10 +45,11 @@ public class PessoaController {
 
     @PostMapping
     @Operation(summary = "Cadastrar pessoa", description = "Realiza o cadastro da pessoa na base de dados.")
-    public ResponseEntity<Pessoa> salvarPessoa(@RequestBody Pessoa pessoa) {
+    public ResponseEntity<Pessoa> salvarPessoa(@RequestBody Pessoa pessoa, UriComponentsBuilder uriComponentsBuilder) {
         Pessoa pessoaSalva = pessoaService.salvarPessoa(pessoa);
         PessoaHateoas.toHateoas(pessoaSalva.getId(), pessoaSalva);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pessoa);
+        URI uri = uriComponentsBuilder.path("/pessoas/{id}").buildAndExpand(pessoaSalva.getId()).toUri();
+        return ResponseEntity.created(uri).body(pessoaSalva);
     }
 
     @PutMapping("/{id}")
