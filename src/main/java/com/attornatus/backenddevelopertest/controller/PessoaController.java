@@ -1,19 +1,24 @@
 package com.attornatus.backenddevelopertest.controller;
 
+import com.attornatus.backenddevelopertest.dto.PessoaDTO;
 import com.attornatus.backenddevelopertest.entities.Pessoa;
 import com.attornatus.backenddevelopertest.hateoas.PessoaHateoas;
 import com.attornatus.backenddevelopertest.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/pessoas")
 @Tag(name = "Pessoas Controller")
 public class PessoaController {
@@ -27,40 +32,47 @@ public class PessoaController {
 
     @GetMapping
     @Operation(summary = "Listar todas as pessoas", description = "Realiza a listagem de todas as pessoas cadastradas.")
-    public ResponseEntity<List<Pessoa>> listarTodasAsPessoas() {
+    public ResponseEntity<List<PessoaDTO>> listarTodasAsPessoas() {
         List<Pessoa> listaDeTodasAsPessoas = pessoaService.listarTodasAsPessoas();
-        PessoaHateoas.toHateoasList(listaDeTodasAsPessoas);
-        return ResponseEntity.ok().body(listaDeTodasAsPessoas);
+        List<PessoaDTO> listaDeTodasAsPessoasDTO = new ArrayList<>();
+        for (Pessoa pessoa : listaDeTodasAsPessoas) {
+            listaDeTodasAsPessoasDTO.add(pessoa.toDto());
+        }
+        PessoaHateoas.toHateoasList(listaDeTodasAsPessoasDTO);
+        return ResponseEntity.ok().body(listaDeTodasAsPessoasDTO);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Consultar pessoa por ID", description = "Realiza a consulta de uma pessoa por seu ID.")
-    public ResponseEntity<Pessoa> consultarPessoaPorID(@PathVariable String id) {
-        Pessoa pessoa = pessoaService.consultarPessoa(id);
-        PessoaHateoas.toHateoas(id, pessoa);
-        return ResponseEntity.ok().body(pessoa);
+    public ResponseEntity<PessoaDTO> consultarPessoaPorID(@PathVariable int id) {
+        Pessoa pessoa = pessoaService.consultarPessoaPorId(id);
+        PessoaDTO pessoaDTO = pessoa.toDto();
+        PessoaHateoas.toHateoas(pessoaDTO.getPublicId(), pessoaDTO);
+        return ResponseEntity.ok().body(pessoaDTO);
     }
 
     @PostMapping
     @Operation(summary = "Cadastrar pessoa", description = "Realiza o cadastro da pessoa na base de dados.")
-    public ResponseEntity<Pessoa> salvarPessoa(@RequestBody Pessoa pessoa, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<PessoaDTO> salvarPessoa(@RequestBody @Valid Pessoa pessoa, UriComponentsBuilder uriComponentsBuilder) {
         Pessoa pessoaSalva = pessoaService.salvarPessoa(pessoa);
-        PessoaHateoas.toHateoas(pessoaSalva.getId(), pessoaSalva);
-        URI uri = uriComponentsBuilder.path("/pessoas/{id}").buildAndExpand(pessoaSalva.getId()).toUri();
-        return ResponseEntity.created(uri).body(pessoaSalva);
+        PessoaDTO pessoaDTO = pessoaSalva.toDto();
+        PessoaHateoas.toHateoas(pessoaDTO.getPublicId(), pessoaDTO);
+        URI uri = uriComponentsBuilder.path("/pessoas/{id}").buildAndExpand(pessoaDTO.getPublicId()).toUri();
+        return ResponseEntity.created(uri).body(pessoaDTO);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar cadastro da pessoa", description = "Realiza a atualização do cadastro da pessoa.")
-    public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable String id, @RequestBody Pessoa pessoa) {
+    public ResponseEntity<PessoaDTO> atualizarPessoa(@PathVariable int id, @RequestBody Pessoa pessoa) {
         Pessoa pessoaAtualizada = pessoaService.atualizarPessoa(id, pessoa);
-        PessoaHateoas.toHateoas(id, pessoaAtualizada);
-        return ResponseEntity.ok().body(pessoaAtualizada);
+        PessoaDTO pessoaDTO = pessoaAtualizada.toDto();
+        PessoaHateoas.toHateoas(pessoaDTO.getPublicId(), pessoaDTO);
+        return ResponseEntity.ok().body(pessoaDTO);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir pessoa", description = "Realiza a exclusão da pessoa da base de dados.")
-    public ResponseEntity<Void> excluirPessoa(@PathVariable String id) {
+    public ResponseEntity<Void> excluirPessoa(@PathVariable int id) {
         pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();
     }

@@ -7,7 +7,6 @@ import com.attornatus.backenddevelopertest.repository.PessoaRepository;
 import com.attornatus.backenddevelopertest.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public Pessoa consultarPessoa(String id) {
+    public Pessoa consultarPessoaPorId(int id) {
         return verificarSePessoaExiste(id);
     }
 
@@ -44,8 +43,11 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public Pessoa salvarPessoa(Pessoa pessoa) {
         pessoa.setId(generateUUID());
+        pessoa.setPublicIdPessoa(pessoa.getPublicIdPessoa());
 
         for (Endereco endereco : pessoa.getEnderecos()) {
+            endereco.setPublicIdPessoa(pessoa.getPublicIdPessoa());
+            endereco.setPublicIdEndereco(endereco.getPublicIdEndereco());
             endereco.setId(generateUUID());
             endereco.setIdPessoa(pessoa.getId());
             enderecoService.salvarEndereco(endereco);
@@ -55,26 +57,26 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public Pessoa atualizarPessoa(String id, Pessoa pessoa) {
+    public Pessoa atualizarPessoa(int id, Pessoa pessoa) {
         final Pessoa pessoaIndicada = verificarSePessoaExiste(id);
         pessoaIndicada.setNome(pessoa.getNome());
         pessoaIndicada.setDataNascimento(pessoa.getDataNascimento());
 
         for (Endereco endereco : pessoa.getEnderecos()) {
-            enderecoService.atualizarEndereco(endereco.getId(), endereco);
+            enderecoService.atualizarEndereco(endereco.getPublicIdPessoa(), endereco);
         }
 
         return pessoaRepository.save(pessoaIndicada);
     }
 
     @Override
-    public void deletarPessoa(String id) {
+    public void deletarPessoa(int id) {
         verificarSePessoaExiste(id);
-        pessoaRepository.deleteById(id);
+        pessoaRepository.excluirPorIdPublico(id);
     }
 
-    private Pessoa verificarSePessoaExiste(String id) {
-        Optional<Pessoa> optionalPessoa = pessoaRepository.findById(id);
+    private Pessoa verificarSePessoaExiste(int id) {
+        Optional<Pessoa> optionalPessoa = Optional.ofNullable(pessoaRepository.consultarPorIdPublico(id));
         final Pessoa pessoaIndicada;
 
         if (optionalPessoa.isPresent()) {

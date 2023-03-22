@@ -9,7 +9,6 @@ import com.attornatus.backenddevelopertest.repository.PessoaRepository;
 import com.attornatus.backenddevelopertest.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,13 +40,15 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public Endereco consultarPorId(String id) {
+    public Endereco consultarPorId(int id) {
         return verificarSeEnderecoExiste(id);
     }
 
     @Override
     public Endereco salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco) {
         endereco.setId(generateUUID());
+        endereco.setPublicIdEndereco(endereco.getPublicIdEndereco());
+        endereco.setPublicIdPessoa(pessoa.getPublicIdPessoa());
         endereco.setIdPessoa(pessoa.getId());
         enderecoRepository.save(endereco);
         pessoa.adicionaEndereco(endereco);
@@ -56,13 +57,13 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public List<Endereco> listarTodosOsEnderecosDaPessoa(String idPessoa) {
+    public List<Endereco> listarTodosOsEnderecosDaPessoa(int idPessoa) {
         verificarSePessoaExiste(idPessoa);
         return enderecoRepository.listarEnderecosPorPessoa(idPessoa);
     }
 
     @Override
-    public void atualizarEndereco(String id, Endereco endereco) {
+    public void atualizarEndereco(int id, Endereco endereco) {
         Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
         Endereco enderecoAtualizado = enderecoOptional.get();
         enderecoAtualizado.setLogradouro(endereco.getLogradouro());
@@ -72,17 +73,17 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public Endereco consultarEnderecoPrincipal(String idPessoa) {
+    public Endereco consultarEnderecoPrincipal(int idPessoa) {
         Pessoa pessoa = verificarSePessoaExiste(idPessoa);
         return enderecoRepository.consultarEnderecoPrincipal(idPessoa);
     }
 
     @Override
-    public Endereco informarEnderecoPrincipal(String idPessoa, String idEndereco) {
+    public Endereco informarEnderecoPrincipal(int idPessoa, int idEndereco) {
         Pessoa pessoa = verificarSePessoaExiste(idPessoa);
         Endereco enderecoPrincipal = verificarSeEnderecoExiste(idEndereco);
         for (Endereco endereco : pessoa.getEnderecos()) {
-            if (endereco.getId().equals(idEndereco)) {
+            if (endereco.getPublicIdEndereco() == idEndereco) {
                 endereco.setPrincipal(true);
                 enderecoPrincipal = endereco;
                 enderecoRepository.save(endereco);
@@ -96,8 +97,8 @@ public class EnderecoServiceImpl implements EnderecoService {
         return enderecoPrincipal;
     }
 
-    private Endereco verificarSeEnderecoExiste(String id) {
-        Optional<Endereco> optionalEndereco = enderecoRepository.findById(id);
+    private Endereco verificarSeEnderecoExiste(int id) {
+        Optional<Endereco> optionalEndereco = Optional.ofNullable(enderecoRepository.consultarEnderecoPorIdPublico(id));
         final Endereco enderecoIndicado;
 
         if (optionalEndereco.isPresent()) {
@@ -109,8 +110,8 @@ public class EnderecoServiceImpl implements EnderecoService {
         return enderecoIndicado;
     }
 
-    private Pessoa verificarSePessoaExiste(String id) {
-        Optional<Pessoa> optionalPessoa = pessoaRepository.findById(id);
+    private Pessoa verificarSePessoaExiste(int id) {
+        Optional<Pessoa> optionalPessoa = Optional.ofNullable(pessoaRepository.consultarPorIdPublico(id));
         final Pessoa pessoaIndicada;
 
         if (optionalPessoa.isPresent()) {

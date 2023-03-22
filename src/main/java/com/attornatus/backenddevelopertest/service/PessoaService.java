@@ -13,14 +13,14 @@ public interface PessoaService {
     List<Pessoa> listarTodasAsPessoas();
 
     @Transactional(readOnly = true)
-    Pessoa consultarPessoa(String id);
+    Pessoa consultarPessoaPorId(int id);
 
     @Transactional
     Pessoa salvarPessoa(Pessoa pessoa);
 
     @Transactional
-    Pessoa atualizarPessoa(String id, Pessoa pessoa);
+    Pessoa atualizarPessoa(int id, Pessoa pessoa);
 
     @Transactional
-    void deletarPessoa(String id);
+    void deletarPessoa(int id);
 }

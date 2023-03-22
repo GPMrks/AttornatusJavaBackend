@@ -14,21 +14,21 @@ public interface EnderecoService {
     Endereco salvarEndereco(Endereco endereco);
 
     @Transactional(readOnly = true)
-    Endereco consultarPorId(String id);
+    Endereco consultarPorId(int id);
 
     @Transactional
-    void atualizarEndereco(String id, Endereco endereco);
+    void atualizarEndereco(int id, Endereco endereco);
 
     @Transactional
     Endereco salvarEnderecoParaPessoa(Pessoa pessoa, Endereco endereco);
 
     @Transactional(readOnly = true)
-    List<Endereco> listarTodosOsEnderecosDaPessoa(String idPessoa);
+    List<Endereco> listarTodosOsEnderecosDaPessoa(int idPessoa);
 
     @Transactional
-    Endereco informarEnderecoPrincipal(String idPessoa, String idEndereco);
+    Endereco informarEnderecoPrincipal(int idPessoa, int idEndereco);
 
     @Transactional(readOnly = true)
-    Endereco consultarEnderecoPrincipal(String idPessoa);
+    Endereco consultarEnderecoPrincipal(int idPessoa);
 
 }

@@ -1,4 +1,4 @@
-package com.attornatus.backenddevelopertest.controller;
+package com.attornatus.backenddevelopertest.advice;
 
 import com.attornatus.backenddevelopertest.exception.EnderecoNaoEncontradoException;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.attornatus.backenddevelopertest.controller;
+package com.attornatus.backenddevelopertest.advice;
 
 import com.attornatus.backenddevelopertest.exception.PessoaNaoEncontradaException;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import java.time.Instant;
 @RestControllerAdvice
 public class PessoaControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler(PessoaNaoEncontradaException.class)
     public ProblemDetail pessoaNaoEncontrada(PessoaNaoEncontradaException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
         problemDetail.setTitle("Pessoa não encontrada com este ID");

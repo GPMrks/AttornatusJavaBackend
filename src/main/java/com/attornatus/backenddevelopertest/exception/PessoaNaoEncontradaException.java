@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class PessoaNaoEncontradaException extends RuntimeException {
-    public PessoaNaoEncontradaException(String id) {
+    public PessoaNaoEncontradaException(int id) {
         super("Pessoa não encontrada com ID " + id);
     }
 }

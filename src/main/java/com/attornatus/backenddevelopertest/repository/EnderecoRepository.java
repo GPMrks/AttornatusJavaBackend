@@ -8,11 +8,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EnderecoRepository extends JpaRepository<Endereco, String> {
+public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
-    @Query("FROM Endereco e WHERE e.idPessoa = :idPessoa")
-    List<Endereco> listarEnderecosPorPessoa(String idPessoa);
+    @Query("FROM Endereco e WHERE e.publicIdEndereco = :id")
+    Endereco consultarEnderecoPorIdPublico(int id);
 
-    @Query("FROM Endereco e WHERE e.idPessoa = :idPessoa AND e.principal = true")
-    Endereco consultarEnderecoPrincipal(String idPessoa);
+    @Query("FROM Endereco e WHERE e.publicIdPessoa = :idPessoa")
+    List<Endereco> listarEnderecosPorPessoa(int idPessoa);
+
+    @Query("FROM Endereco e WHERE e.publicIdPessoa = :idPessoa AND e.principal = true")
+    Endereco consultarEnderecoPrincipal(int idPessoa);
 }

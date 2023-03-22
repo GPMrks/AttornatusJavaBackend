@@ -1,37 +1,55 @@
 package com.attornatus.backenddevelopertest.entities;
 
+import com.attornatus.backenddevelopertest.dto.EnderecoDTO;
+import com.attornatus.backenddevelopertest.dto.PessoaDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import org.springframework.hateoas.RepresentationModel;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Pessoa extends RepresentationModel<Pessoa> {
+public class Pessoa {
+
+    private static int counter = 0;
+
+    private int publicIdPessoa;
 
     @Id
     private String id;
 
+    @NotNull
+    @NotBlank
     private String nome;
+
+    @Past(message = "Data não pode ser maior que a atual!")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 
+    @NotEmpty
     @OneToMany(fetch = FetchType.EAGER)
     private List<Endereco> enderecos;
 
-    public Pessoa(String nome, LocalDate dataNascimento, List<Endereco> enderecos) {
+    public Pessoa() {
+
+    }
+
+    public Pessoa(String id, String nome, LocalDate dataNascimento, List<Endereco> enderecos) {
+        this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.enderecos = enderecos;
     }
 
-    public Pessoa() {
+    public int getPublicIdPessoa() {
+        return publicIdPessoa;
+    }
 
+    public void setPublicIdPessoa(int publicIdPessoa) {
+        this.publicIdPessoa = ++counter;
     }
 
     public String getId() {
@@ -69,6 +87,14 @@ public class Pessoa extends RepresentationModel<Pessoa> {
     public Endereco adicionaEndereco(Endereco endereco) {
         this.enderecos.add(endereco);
         return endereco;
+    }
+
+    public PessoaDTO toDto() {
+        List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
+        for (Endereco endereco : enderecos) {
+            enderecoDTOS.add(endereco.toDto());
+        }
+        return new PessoaDTO(publicIdPessoa ,nome, dataNascimento, enderecoDTOS);
     }
 
     @Override
